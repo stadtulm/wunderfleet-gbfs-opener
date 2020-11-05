@@ -1,0 +1,37 @@
+map $http_x_forwarded_proto $real_scheme {
+	default	$http_x_forwarded_proto;
+	''		$scheme;
+}
+
+map $http_x_forwarded_path $real_path {
+	default	$http_x_forwarded_path;
+	''		'';
+}
+
+map $http_x_forwarded_port $real_port {
+	default	":$http_x_forwarded_port";
+	''		"";
+}
+
+server {
+	listen 80;
+	server_name _;
+
+	location / {
+		proxy_pass https://${WUNDER_BACKEND_HOST}/rest/gbfs/;
+		proxy_set_header Authorization "Bearer ${WUNDER_API_TOKEN}";
+		proxy_set_header Cookie "";
+		proxy_set_header X-Forwarded-Proto "";
+		proxy_set_header X-Forwarded-Host "";
+		proxy_set_header X-Forwarded-Port "";
+		proxy_set_header X-Forwarded-Path "";
+		proxy_hide_header Set-Cookie;
+		sub_filter_types text/json application/json;
+		sub_filter "https://${WUNDER_BACKEND_HOST}/rest/gbfs" "$real_scheme://$host$real_port$real_path";
+		sub_filter_once off;
+	}
+
+	location = / {
+		return 301 "$real_scheme://$host$real_port$real_path/gbfs.json";
+	}
+}
