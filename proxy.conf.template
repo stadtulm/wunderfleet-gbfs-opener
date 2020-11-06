@@ -10,6 +10,8 @@ map $http_x_forwarded_prefix $real_path {
 
 map $http_x_forwarded_port $real_port {
 	default	":$http_x_forwarded_port";
+	80		"";
+	443		"";
 	''		"";
 }
 
