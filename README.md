@@ -15,4 +15,4 @@ The container needs two environment variables to run: `WUNDER_BACKEND_HOST` and 
 
 Ask your sharing provider to get these two. Note that the `WUNDER_API_TOKEN` is the City Access Token for their _Mobility Data API_. It may be that your sharing provider has to call their wunder support representative to create these for you.
 
-If you mount the container with something like the kubernetes ingress, the container also provides you with support for the `X-Forwarded-Proto`, `X-Forwarded-Host`, `X-Forwarded-Port` and `X-Forwarded-Path` headers, so the URLs that are rewritten in the json contain the right parts needed to work.
+If you mount the container with something like the kubernetes ingress, the container also provides you with support for the `X-Forwarded-Proto`, `X-Forwarded-Host`, `X-Forwarded-Port` and `X-Forwarded-Prefix` headers, so the URLs that are rewritten in the json contain the right parts needed to work.

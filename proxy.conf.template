@@ -3,8 +3,8 @@ map $http_x_forwarded_proto $real_scheme {
 	''		$scheme;
 }
 
-map $http_x_forwarded_path $real_path {
-	default	$http_x_forwarded_path;
+map $http_x_forwarded_prefix $real_path {
+	default	$http_x_forwarded_prefix;
 	''		'';
 }
 
@@ -24,7 +24,7 @@ server {
 		proxy_set_header X-Forwarded-Proto "";
 		proxy_set_header X-Forwarded-Host "";
 		proxy_set_header X-Forwarded-Port "";
-		proxy_set_header X-Forwarded-Path "";
+		proxy_set_header X-Forwarded-Prefix "";
 		proxy_hide_header Set-Cookie;
 		sub_filter_types text/json application/json;
 		sub_filter "https://${WUNDER_BACKEND_HOST}/rest/gbfs" "$real_scheme://$host$real_port$real_path";
