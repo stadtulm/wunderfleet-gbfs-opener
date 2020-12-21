@@ -19,8 +19,13 @@ server {
 	listen 80;
 	server_name _;
 
+	resolver ${DNS_RESOLVER} valid=90s;
+
+	# this forces re-resolution of the dns name
+	set $backend "https://${WUNDER_BACKEND_HOST}/rest/gbfs$request_uri";
+
 	location / {
-		proxy_pass https://${WUNDER_BACKEND_HOST}/rest/gbfs/;
+		proxy_pass $backend;
 		proxy_set_header Authorization "Bearer ${WUNDER_API_TOKEN}";
 		proxy_set_header Cookie "";
 		proxy_set_header X-Forwarded-Proto "";
